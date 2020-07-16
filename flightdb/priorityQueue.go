@@ -1,11 +1,13 @@
 package flightsdb
 
+// QueueItem item struct
 type QueueItem struct {
 	data  *Airport
 	value float32
 	index int
 }
 
+// Queue queue to be used with container/heap
 type Queue []*QueueItem
 
 func (q Queue) Len() int {
@@ -22,6 +24,7 @@ func (q Queue) Swap(i, j int) {
 	q[j].index = j
 }
 
+// Push use this method with container/heap
 func (q *Queue) Push(x interface{}) {
 	n := len(*q)
 	item := x.(*QueueItem)
@@ -29,6 +32,7 @@ func (q *Queue) Push(x interface{}) {
 	*q = append(*q, item)
 }
 
+// Pop use this method with container/heap
 func (q *Queue) Pop() interface{} {
 	old := *q
 	n := len(old)

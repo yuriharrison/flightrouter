@@ -6,24 +6,34 @@ import (
 	"testing"
 )
 
-var codes []string = []string{"APQ", "BAZ", "BEL", "PLU", "BSB", "VCP", "CPQ", "CAU", "CAF", "CAC", "CIZ", "CDJ", "CZS", "BFH", "CWB", "FEJ", "FLN", "FOR", "IGU", "IZA", "GYN", "GRU", "IMP"}
+const (
+	APQ = "APQ"
+	BAZ = "BAZ"
+	BEL = "BEL"
+	BSB = "BSB"
+	CNF = "CNF"
+	GRU = "GRU"
+	PLU = "PLU"
+	VCP = "VCP"
+)
+
 var dataSize int = 10
 var data = []struct {
 	orig, dest string
 	price      float32
 }{
-	{"cnf", "gru", 200},
-	{"cnf", "gru", 215.5},
-	{"cnf", "apq", 899.99},
-	{"gru", "cnf", 70},
-	{"gru", "cnf", 78},
-	{"gru", "baz", 300},
-	{"gru", "plu", 10},
-	{"baz", "bel", 600},
-	{"baz", "gru", 10},
-	{"baz", "plu", 200},
-	{"plu", "apq", 15},
-	{"bsb", "vcp", 415.5},
+	{CNF, GRU, 200},
+	{CNF, GRU, 215.5},
+	{CNF, APQ, 899.99},
+	{GRU, CNF, 70},
+	{GRU, CNF, 78},
+	{GRU, BAZ, 300},
+	{GRU, PLU, 10},
+	{BAZ, BEL, 600},
+	{BAZ, GRU, 10},
+	{BAZ, PLU, 200},
+	{PLU, APQ, 15},
+	{BSB, VCP, 415.5},
 }
 
 type assertRoutePayload struct {
@@ -86,28 +96,49 @@ func TestFlightsDB(t *testing.T) {
 
 	// Assert cheapest route
 	assertRoute(assertRoutePayload{
-		t, db, "baz", "bel", []string{"BAZ", "BEL"},
+		t, db, BAZ, BEL, []string{BAZ, BEL},
 	})
 	assertRoute(assertRoutePayload{
-		t, db, "cnf", "apq", []string{"CNF", "GRU", "PLU", "APQ"},
+		t, db, CNF, APQ, []string{CNF, GRU, PLU, APQ},
 	})
-	db.Remove("GRU", "PLU")
+	db.Remove(GRU, PLU)
 	assertRoute(assertRoutePayload{
-		t, db, "cnf", "apq", []string{"CNF", "GRU", "BAZ", "PLU", "APQ"},
+		t, db, CNF, APQ, []string{CNF, GRU, BAZ, PLU, APQ},
 	})
-	db.Add("baz", "plu", 400)
+	db.Add(BAZ, PLU, 400)
 	assertRoute(assertRoutePayload{
-		t, db, "cnf", "apq", []string{"CNF", "APQ"},
+		t, db, CNF, APQ, []string{CNF, APQ},
 	})
 
-	// Assert no route available
-	if route, err := db.CheapestRoute("CNF", "BSB"); err == nil || len(route) > 0 {
+	// Assert NO routes available
+	if route, err := db.CheapestRoute(CNF, BSB); err == nil || len(route) > 0 {
 		t.Error(err)
 	}
 	if route, err := db.CheapestRoute("AAA", "ZZZ"); err == nil || len(route) > 0 {
 		t.Error(err)
 	}
 
-	// Remove invalid
+	// Remove invalid, don't crash
 	db.Remove("AAA", "ZZZ")
+}
+
+func TestFlightsDBCache(t *testing.T) {
+	db := NewFlightsDB()
+	db.Add(CNF, BSB, 200)
+	db.Add(CNF, GRU, 200)
+	db.CheapestRoute(CNF, BSB)                  // miss
+	db.CheapestRoute(CNF, GRU)                  // miss
+	db.CheapestRoute(CNF, strings.ToLower(BSB)) // hit
+	if db.cache.hits != 1 || db.cache.misses != 2 {
+		t.Errorf(
+			"Cache is not working properly: Hits %v Misses %v",
+			db.cache.hits,
+			db.cache.misses,
+		)
+	}
+	db.Add(BSB, GRU, 200) // clean
+	if db.cache.cheapestRoute != nil {
+		t.Error("Cache is not being cleaned!")
+	}
+	db.CheapestRoute(APQ, BSB) // don't crash
 }
