@@ -52,24 +52,47 @@ func NewFlightsDB() *FlightsDB {
 	}
 }
 
+func (db *FlightsDB) getAirports(origCode, destCode string) (*Airport, *Airport, error) {
+	origin, err := db.GetAirport(origCode)
+	if err != nil {
+		return nil, nil, err
+	}
+	destination, err := db.GetAirport(destCode)
+	if err != nil {
+		return nil, nil, err
+	}
+	return origin, destination, nil
+}
+
 // Add new flight to DB
-func (db *FlightsDB) Add(originCode, destCode string, price float32) {
-	origin, destination := db.GetAirport(originCode), db.GetAirport(destCode)
+func (db *FlightsDB) Add(origCode, destCode string, price float32) error {
+	origin, destination, err := db.getAirports(origCode, destCode)
+	if err != nil {
+		return err
+	}
 	db.cache.Clean()
 	if new := origin.NewFlight(destination, price); new {
 		db.numFlights++
 	}
+	return nil
 }
 
 // GetAirport return the existent Airport or create a new one for [code]
-func (db *FlightsDB) GetAirport(code string) *Airport {
+func (db *FlightsDB) GetAirport(code string) (*Airport, error) {
+	if len(code) != 3 {
+		return nil, fmt.Errorf(
+			"Invalid airport code format. Expecting exacly 3 characters got %v",
+			code,
+		)
+	}
 	code = strings.ToUpper(code)
+
 	if ap, ok := db.airports[code]; ok {
-		return ap
+		return ap, nil
 	}
 	newAirport := NewAirport(code)
 	db.airports[code] = newAirport
-	return newAirport
+	return newAirport, nil
 }
 
 // Size return the total number of flights on the database
@@ -78,10 +101,14 @@ func (db *FlightsDB) Size() int {
 }
 
 // Remove removes a flight if it exists
-func (db *FlightsDB) Remove(origCode, destcode string) {
-	origin, destination := db.GetAirport(origCode), db.GetAirport(destcode)
+func (db *FlightsDB) Remove(origCode, destCode string) error {
+	origin, destination, err := db.getAirports(origCode, destCode)
+	if err != nil {
+		return err
+	}
 	delete(origin.flights, destination)
 	db.cache.Clean()
+	return nil
 }
 
 // CheapestRoute return the cheapest route for a given origem and destination
@@ -89,7 +116,10 @@ func (db *FlightsDB) CheapestRoute(origCode, destCode string) ([]*Flight, error)
 	if cache := db.cache.GetCheapestRoute(origCode, destCode); cache != nil {
 		return cache, nil
 	}
-	origin, destination := db.GetAirport(origCode), db.GetAirport(destCode)
+	origin, destination, err := db.getAirports(origCode, destCode)
+	if err != nil {
+		return nil, err
+	}
 	route := FindCheapestRoute(origin, destination)
 	if route == nil {
 		return nil, fmt.Errorf(

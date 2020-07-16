@@ -10,7 +10,7 @@ func FindCheapestRoute(origin, destination *Airport) []*Flight {
 	routeTrace := make(map[*Airport]*Flight)
 	visited := make(map[*Airport]bool)
 	accPriceTable := make(map[*Airport]float32)
-	queue := &Queue{&QueueItem{data: origin, value: 0, index: 0}}
+	queue := &Queue{&QueueItem{data: origin, value: 0}}
 	accPriceTable[origin] = 0
 	heap.Init(queue)
 

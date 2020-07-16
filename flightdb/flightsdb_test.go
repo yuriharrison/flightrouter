@@ -86,10 +86,14 @@ func assertRoute(p assertRoutePayload) {
 
 func TestFlightsDB(t *testing.T) {
 	db := NewFlightsDB()
-	// Assert size
 	for _, d := range data {
-		db.Add(d.orig, d.dest, d.price)
+		err := db.Add(d.orig, d.dest, d.price)
+		if err != nil {
+			t.Errorf("Error adding flight %v %v %v", d.orig, d.dest, d.price)
+		}
 	}
+
+	// Assert size
 	if l := db.Size(); l != dataSize {
 		t.Errorf("FlightsDB.Size() %v != %v expected", l, 1)
 	}
@@ -120,6 +124,25 @@ func TestFlightsDB(t *testing.T) {
 
 	// Remove invalid, don't crash
 	db.Remove("AAA", "ZZZ")
+}
+
+func TestFlightDBFailInvalidCodeFormat(t *testing.T) {
+	db := NewFlightsDB()
+	if err := db.Add("AAA4", "ZZZ", 200); err == nil {
+		t.Error("Should fail .Add.")
+	}
+	if err := db.Add("AAA", "ZZ", 200); err == nil {
+		t.Error("Should fail .Add.")
+	}
+	if err := db.Add("AA", "ZZZ", 200); err == nil {
+		t.Error("Should fail .Add.")
+	}
+	if err := db.Remove("AA", "ZZZ"); err == nil {
+		t.Error("Should fail .Remove.")
+	}
+	if _, err := db.CheapestRoute("AA", "ZZ"); err == nil {
+		t.Error("Should fail .CheapestRoute.")
+	}
 }
 
 func TestFlightsDBCache(t *testing.T) {
