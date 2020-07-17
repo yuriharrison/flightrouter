@@ -23,12 +23,12 @@ func NewAirport(code string) *Airport {
 type Flight struct {
 	orig  *Airport
 	dest  *Airport
-	Price float32
+	Price float64
 }
 
 // NewFlight create flight or update price for destination
 // return true if a new flight was created false if updated.
-func (ap *Airport) NewFlight(dest *Airport, price float32) bool {
+func (ap *Airport) NewFlight(dest *Airport, price float64) bool {
 	if flight, ok := ap.flights[dest]; ok {
 		flight.Price = price
 		return false
@@ -65,7 +65,7 @@ func (db *FlightsDB) getAirports(origCode, destCode string) (*Airport, *Airport,
 }
 
 // Add new flight to DB
-func (db *FlightsDB) Add(origCode, destCode string, price float32) error {
+func (db *FlightsDB) Add(origCode, destCode string, price float64) error {
 	origin, destination, err := db.getAirports(origCode, destCode)
 	if err != nil {
 		return err

@@ -20,7 +20,7 @@ const (
 var dataSize int = 10
 var data = []struct {
 	orig, dest string
-	price      float32
+	price      float64
 }{
 	{CNF, GRU, 200},
 	{CNF, GRU, 215.5},

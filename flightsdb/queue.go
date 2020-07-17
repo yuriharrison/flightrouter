@@ -3,7 +3,7 @@ package flightsdb
 // QueueItem item struct
 type QueueItem struct {
 	data  *Airport
-	value float32
+	value float64
 }
 
 // Queue queue to be used with container/heap
