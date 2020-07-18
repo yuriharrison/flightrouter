@@ -1,11 +1,24 @@
 # Flight Router
 
+**Example data:** ./fixtures/flights.csv
+
+### Makefile
+
+```
+$make
+build                Build application
+format               Run GOFMT to format code
+help                 This help
+lint                 Run GOVET and GOLINT to check code quality
+test                 Run tests
+```
+
 ## Usage
 
 ### CLI
 
 ```shell
-$ flightrouter ./loader/fixtures/flights.csv
+$ ./flightrouter ../fixtures/flights.csv
 Importing file...
 Search for flight (e.g. GRU-APQ): GRU-APQ
 Cheapest route available: GRU-PLU-APQ -> $25.00
