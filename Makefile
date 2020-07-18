@@ -18,4 +18,4 @@ test: ## Run tests
 	
 build: lint test ## Build application
 	echo "Running build"
-	go build -o flightrouter
+	go build -o bin/flightrouter
