@@ -22,7 +22,7 @@ func FindCheapestRoute(origin, destination *Airport) []*Flight {
 		item := heap.Pop(queue).(*QueueItem)
 		ap := item.data
 		for _, flight := range ap.flights {
-			dest := flight.dest
+			dest := flight.Destination
 			accPrice := accPriceTable[ap] + flight.Price
 			if oldAccPrice, ok := accPriceTable[dest]; !ok || accPrice < oldAccPrice {
 				accPriceTable[dest] = accPrice
@@ -40,7 +40,7 @@ func FindCheapestRoute(origin, destination *Airport) []*Flight {
 
 func reverseRoute(destination *Airport, routeTrace map[*Airport]*Flight) []*Flight {
 	route := []*Flight{}
-	for next := routeTrace[destination]; next != nil; next = routeTrace[next.orig] {
+	for next := routeTrace[destination]; next != nil; next = routeTrace[next.Origin] {
 		route = append(route, next)
 	}
 	for i, j := 0, len(route)-1; i < j; i, j = i+1, j-1 {

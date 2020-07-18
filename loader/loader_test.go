@@ -12,7 +12,7 @@ const (
 )
 
 func TestImportFlightsFromFile(t *testing.T) {
-	db := flightsdb.NewFlightsDB()
+	db := flightsdb.New()
 	err := ImportFlightsFromFile(flightsFile, db)
 	if err != nil {
 		t.Error(err.Error())

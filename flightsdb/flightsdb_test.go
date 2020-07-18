@@ -56,13 +56,13 @@ func assertRoute(p assertRoutePayload) {
 	var routeCodes []string
 	for i, flight := range route {
 		if i == 0 {
-			routeCodes = append(routeCodes, flight.orig.Code)
-			if !fail && flight.orig.Code != strings.ToUpper(p.expectedRoute[i]) {
+			routeCodes = append(routeCodes, flight.Origin.Code)
+			if !fail && flight.Origin.Code != strings.ToUpper(p.expectedRoute[i]) {
 				fail = true
 			}
 		}
-		routeCodes = append(routeCodes, flight.dest.Code)
-		if !fail && flight.dest.Code != strings.ToUpper(p.expectedRoute[i+1]) {
+		routeCodes = append(routeCodes, flight.Destination.Code)
+		if !fail && flight.Destination.Code != strings.ToUpper(p.expectedRoute[i+1]) {
 			fail = true
 		}
 	}
@@ -85,7 +85,7 @@ func assertRoute(p assertRoutePayload) {
 }
 
 func TestFlightsDB(t *testing.T) {
-	db := NewFlightsDB()
+	db := New()
 	for _, d := range data {
 		err := db.Add(d.orig, d.dest, d.price)
 		if err != nil {
@@ -127,7 +127,7 @@ func TestFlightsDB(t *testing.T) {
 }
 
 func TestFlightDBFailInvalidCodeFormat(t *testing.T) {
-	db := NewFlightsDB()
+	db := New()
 	if err := db.Add("AAA4", "ZZZ", 200); err == nil {
 		t.Error("Should fail .Add.")
 	}
@@ -146,7 +146,7 @@ func TestFlightDBFailInvalidCodeFormat(t *testing.T) {
 }
 
 func TestFlightsDBCache(t *testing.T) {
-	db := NewFlightsDB()
+	db := New()
 	db.Add(CNF, BSB, 200)
 	db.Add(CNF, GRU, 200)
 	db.CheapestRoute(CNF, BSB)                  // miss

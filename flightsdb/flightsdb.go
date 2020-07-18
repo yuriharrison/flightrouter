@@ -21,9 +21,9 @@ func NewAirport(code string) *Airport {
 
 // Flight struct
 type Flight struct {
-	orig  *Airport
-	dest  *Airport
-	Price float64
+	Origin      *Airport
+	Destination *Airport
+	Price       float64
 }
 
 // NewFlight create flight or update price for destination
@@ -44,8 +44,8 @@ type FlightsDB struct {
 	cache      Cache
 }
 
-// NewFlightsDB create a new *FlightsDB
-func NewFlightsDB() *FlightsDB {
+// New create a new *FlightsDB
+func New() *FlightsDB {
 	return &FlightsDB{
 		airports: make(map[string]*Airport),
 		cache:    Cache{},
@@ -81,7 +81,7 @@ func (db *FlightsDB) Add(origCode, destCode string, price float64) error {
 func (db *FlightsDB) GetAirport(code string) (*Airport, error) {
 	if len(code) != 3 {
 		return nil, fmt.Errorf(
-			"Invalid airport code format. Expecting exacly 3 characters got %v",
+			"Invalid airport code format. Expecting exacly 3 characters got \"%v\"",
 			code,
 		)
 	}

@@ -38,7 +38,7 @@ func LoadFlights(file io.Reader, db *db.FlightsDB) error {
 			log.Fatal(err)
 		}
 		if len(row) != 3 {
-			return fmt.Errorf("Expected 3 columns in CSV got %v", len(row))
+			return fmt.Errorf("Expected 3 columns in CSV got \"%v\"", len(row))
 		}
 		origCode, destCode, priceStr := row[0], row[1], row[2]
 		if price, err := strconv.ParseFloat(priceStr, 64); err == nil {
