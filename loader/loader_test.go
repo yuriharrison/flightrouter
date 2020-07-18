@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	flightsFile = "./fixtures/flights.csv"
+	flightsFile = "../fixtures/flights.csv"
 	numFlights  = 10 // 10 flights 3 updates
 )
 

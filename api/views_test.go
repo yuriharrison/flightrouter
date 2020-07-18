@@ -24,7 +24,7 @@ const ContentType = "Content-Type"
 func New() (app *fiber.App) {
 	app = fiber.New()
 	db = flightsdb.New()
-	loader.ImportFlightsFromFile("../loader/fixtures/flights.csv", db)
+	loader.ImportFlightsFromFile("../fixtures/flights.csv", db)
 	AddMiddleware(app)
 	AddRoutes(app)
 	return
@@ -161,7 +161,7 @@ func TestImportFlights(t *testing.T) {
 	app := New()
 	body := new(bytes.Buffer)
 	form := multipart.NewWriter(body)
-	_, err := form.CreateFormFile("document", "../loader/fixtures/flights.csv")
+	_, err := form.CreateFormFile("document", "../fixtures/flights.csv")
 	if err != nil {
 		t.Error(err)
 	}
