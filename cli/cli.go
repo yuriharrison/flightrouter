@@ -6,10 +6,10 @@ import (
 	"os"
 
 	"github.com/thatisuday/commando"
-	"github.com/yuriharrison/bexs-test/api"
-	"github.com/yuriharrison/bexs-test/flightsdb"
-	"github.com/yuriharrison/bexs-test/loader"
-	"github.com/yuriharrison/bexs-test/util"
+	"github.com/yuriharrison/flightrouter/api"
+	"github.com/yuriharrison/flightrouter/flightsdb"
+	"github.com/yuriharrison/flightrouter/loader"
+	"github.com/yuriharrison/flightrouter/util"
 )
 
 func cliBasic(args map[string]commando.ArgValue, flags map[string]commando.FlagValue) {

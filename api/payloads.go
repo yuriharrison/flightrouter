@@ -1,6 +1,6 @@
 package api
 
-import "github.com/yuriharrison/bexs-test/flightsdb"
+import "github.com/yuriharrison/flightrouter/flightsdb"
 
 // CheapestRoutePayload _
 type CheapestRoutePayload struct {

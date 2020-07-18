@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/yuriharrison/bexs-test/cli"
+	"github.com/yuriharrison/flightrouter/cli"
 )
 
 func main() {

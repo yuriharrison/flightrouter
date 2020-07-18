@@ -14,9 +14,9 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/gofiber/utils"
 
-	"github.com/yuriharrison/bexs-test/flightsdb"
-	"github.com/yuriharrison/bexs-test/loader"
-	"github.com/yuriharrison/bexs-test/util"
+	"github.com/yuriharrison/flightrouter/flightsdb"
+	"github.com/yuriharrison/flightrouter/loader"
+	"github.com/yuriharrison/flightrouter/util"
 )
 
 const ContentType = "Content-Type"

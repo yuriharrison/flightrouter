@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	db "github.com/yuriharrison/bexs-test/flightsdb"
+	db "github.com/yuriharrison/flightrouter/flightsdb"
 )
 
 // ReadJSON Read a json from a standard *io.Reader to an *interface{}

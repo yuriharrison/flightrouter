@@ -3,7 +3,7 @@ package loader
 import (
 	"testing"
 
-	flightsdb "github.com/yuriharrison/bexs-test/flightsdb"
+	flightsdb "github.com/yuriharrison/flightrouter/flightsdb"
 )
 
 const (

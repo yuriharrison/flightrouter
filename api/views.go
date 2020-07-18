@@ -3,8 +3,8 @@ package api
 import (
 	"github.com/gofiber/fiber"
 
-	"github.com/yuriharrison/bexs-test/loader"
-	"github.com/yuriharrison/bexs-test/util"
+	"github.com/yuriharrison/flightrouter/loader"
+	"github.com/yuriharrison/flightrouter/util"
 )
 
 // NotFoundView - 404

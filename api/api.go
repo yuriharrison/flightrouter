@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gofiber/fiber"
 
-	"github.com/yuriharrison/bexs-test/flightsdb"
+	"github.com/yuriharrison/flightrouter/flightsdb"
 )
 
 var db *flightsdb.FlightsDB

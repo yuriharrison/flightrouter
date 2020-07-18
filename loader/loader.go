@@ -8,7 +8,7 @@ import (
 	"os"
 	"strconv"
 
-	db "github.com/yuriharrison/bexs-test/flightsdb"
+	db "github.com/yuriharrison/flightrouter/flightsdb"
 )
 
 const bufferSize = 4096
