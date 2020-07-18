@@ -12,7 +12,7 @@ require (
 	github.com/thatisuday/clapper v1.0.10
 	github.com/thatisuday/commando v1.0.4
 	github.com/valyala/bytebufferpool v1.0.0
-	github.com/valyala/fasthttp v0.0.0-20171207120941-e5f51c11919d
+	github.com/valyala/fasthttp v1.15.1
 	github.com/valyala/tcplisten v0.0.0-20161114210144-ceec8f93295a
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae
 )
