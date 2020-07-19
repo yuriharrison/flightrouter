@@ -40,7 +40,6 @@ Usage:
 Flags:
    -d, --data                    csv file to pre fetch data (default: NULL)
    -h, --help                    displays usage information of the application or a command (default: false)
-   -p, --port                    port (default: 8080)
 ```
 
 - GET `/flights/search/:route`
@@ -51,3 +50,11 @@ Flags:
   - `curl -X DELETE -w "%{http_code}" localhost:8080/flight/GRU-APQ`
 - PUT `/flights/import/csv`
   - `curl -X PUT -F "document=@./fixtures/flights.csv;type=text/csv" -w "%{http_code}" localhost:8080/flights/import/csv`
+
+#### Monitoring
+
+You can check the application status in the live monitoring page `localhost:8080/`
+
+### CI
+
+- [Workflow](./.github/workflows/ci.yml)
