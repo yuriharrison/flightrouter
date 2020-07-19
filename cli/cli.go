@@ -39,8 +39,7 @@ func startAPI(args map[string]commando.ArgValue, flags map[string]commando.FlagV
 	if csvFile, ok := flags["data"].Value.(string); ok && csvFile != "NULL" {
 		loader.ImportFlightsFromFile(csvFile, db)
 	}
-	port := flags["port"].Value.(int)
-	api.StartServer(db, port)
+	api.StartServer(db)
 }
 
 // Run configure commando and start application
@@ -57,8 +56,7 @@ func Run() {
 
 	commando.
 		Register("api").
-		SetDescription("Starts the Web API").
-		AddFlag("port,p", "port", commando.Int, 8080).
+		SetDescription("Starts the Web API on port 8080").
 		AddFlag("data,d", "csv file to pre fetch data", commando.String, "NULL").
 		SetAction(startAPI)
 

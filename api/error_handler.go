@@ -12,7 +12,7 @@ func ErrorHandler(ctx *fiber.Ctx, err error) {
 	if e, ok := err.(*fiber.Error); ok {
 		code = e.Code
 	}
-	log.Println("Hello ther", err.Error())
+	log.Println("Error:", err.Error())
 	ctx.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
 	ctx.Status(code).
 		JSON(

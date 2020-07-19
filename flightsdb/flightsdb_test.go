@@ -152,15 +152,15 @@ func TestFlightsDBCache(t *testing.T) {
 	db.CheapestRoute(CNF, BSB)                  // miss
 	db.CheapestRoute(CNF, GRU)                  // miss
 	db.CheapestRoute(CNF, strings.ToLower(BSB)) // hit
-	if db.cache.hits != 1 || db.cache.misses != 2 {
+	if db.Cache.hits != 1 || db.Cache.misses != 2 {
 		t.Errorf(
 			"Cache is not working properly: Hits %v Misses %v",
-			db.cache.hits,
-			db.cache.misses,
+			db.Cache.hits,
+			db.Cache.misses,
 		)
 	}
 	db.Add(BSB, GRU, 200) // clean
-	if db.cache.cheapestRoute != nil {
+	if db.Cache.cheapestRoute != nil {
 		t.Error("Cache is not being cleaned!")
 	}
 	db.CheapestRoute(APQ, BSB) // don't crash

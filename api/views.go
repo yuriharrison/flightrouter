@@ -1,7 +1,12 @@
 package api
 
 import (
+	"encoding/json"
+	"log"
+	"time"
+
 	"github.com/gofiber/fiber"
+	"github.com/gofiber/websocket"
 
 	"github.com/yuriharrison/flightrouter/loader"
 	"github.com/yuriharrison/flightrouter/util"
@@ -76,4 +81,24 @@ func ImportFlightsView(c *fiber.Ctx) {
 	}
 	loader.LoadFlights(file, db)
 	c.Status(fiber.StatusNoContent)
+}
+
+// StatusWSView Status WebSocket View
+func StatusWSView(c *websocket.Conn) {
+	ticker := time.NewTicker(time.Second)
+	for {
+		<-ticker.C
+		msg, _ := json.Marshal(
+			StatusPayload{
+				db.NumFlights,
+				StatusCache{db.Cache.Hits, db.Cache.Misses},
+				time.Now(),
+			},
+		)
+		err := c.WriteMessage(1, msg)
+		if err != nil {
+			log.Println("write:", err)
+			break
+		}
+	}
 }

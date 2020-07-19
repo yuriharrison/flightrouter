@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/fasthttp/websocket"
+  packages = ["."]
+  revision = "68b52d7691affe935c9ff2a9ff1e002ba3be2460"
+  version = "v1.4.3"
+
+[[projects]]
   name = "github.com/gofiber/fiber"
   packages = [".","middleware"]
   revision = "55d0fe1944023da00372c73ebfa84c18e56d5a96"
@@ -12,6 +18,12 @@
   packages = [".","memory"]
   revision = "99821683b97341b1784c16386c1ca4b673f230f5"
   version = "v0.0.9"
+
+[[projects]]
+  name = "github.com/gofiber/websocket"
+  packages = ["."]
+  revision = "10c057eceb3279a45f72b574795f69fef38aa8e9"
+  version = "v0.4.1"
 
 [[projects]]
   name = "github.com/gorilla/schema"
@@ -36,6 +48,12 @@
   packages = ["."]
   revision = "7b513a986450394f7bbf1476909911b3aa3a55ce"
   version = "v0.0.12"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/savsgio/gotils"
+  packages = ["."]
+  revision = "13ff1fd2c28cba667907baad9c6b9c6da1415b3b"
 
 [[projects]]
   name = "github.com/thatisuday/clapper"
@@ -76,6 +94,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "30a44fe2e1f76cd29b1478b4441df2ae4726a76ef419012f882c8ebe14fd75b6"
+  inputs-digest = "d451dcf2a1c9a93fae4495fa35efebf4771278aba97bc26eafb7f8b34d4b3c76"
   solver-name = "gps-cdcl"
   solver-version = 1

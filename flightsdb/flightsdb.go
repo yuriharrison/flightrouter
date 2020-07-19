@@ -40,15 +40,15 @@ func (ap *Airport) NewFlight(dest *Airport, price float64) bool {
 // FlightsDB database for query flights
 type FlightsDB struct {
 	airports   map[string]*Airport
-	numFlights int
-	cache      Cache
+	NumFlights int
+	Cache      Cache
 }
 
 // New create a new *FlightsDB
 func New() *FlightsDB {
 	return &FlightsDB{
 		airports: make(map[string]*Airport),
-		cache:    Cache{},
+		Cache:    Cache{},
 	}
 }
 
@@ -70,9 +70,9 @@ func (db *FlightsDB) Add(origCode, destCode string, price float64) error {
 	if err != nil {
 		return err
 	}
-	db.cache.Clean()
+	db.Cache.Clean()
 	if new := origin.NewFlight(destination, price); new {
-		db.numFlights++
+		db.NumFlights++
 	}
 	return nil
 }
@@ -97,7 +97,7 @@ func (db *FlightsDB) GetAirport(code string) (*Airport, error) {
 
 // Size return the total number of flights on the database
 func (db *FlightsDB) Size() int {
-	return db.numFlights
+	return db.NumFlights
 }
 
 // Remove removes a flight if it exists
@@ -107,13 +107,13 @@ func (db *FlightsDB) Remove(origCode, destCode string) error {
 		return err
 	}
 	delete(origin.flights, destination)
-	db.cache.Clean()
+	db.Cache.Clean()
 	return nil
 }
 
 // CheapestRoute return the cheapest route for a given origem and destination
 func (db *FlightsDB) CheapestRoute(origCode, destCode string) ([]*Flight, error) {
-	if cache := db.cache.GetCheapestRoute(origCode, destCode); cache != nil {
+	if cache := db.Cache.GetCheapestRoute(origCode, destCode); cache != nil {
 		return cache, nil
 	}
 	origin, destination, err := db.getAirports(origCode, destCode)
@@ -128,6 +128,6 @@ func (db *FlightsDB) CheapestRoute(origCode, destCode string) ([]*Flight, error)
 			destCode,
 		)
 	}
-	db.cache.SetCheapestRoute(origCode, destCode, route)
+	db.Cache.SetCheapestRoute(origCode, destCode, route)
 	return route, nil
 }

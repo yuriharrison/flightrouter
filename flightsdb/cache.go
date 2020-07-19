@@ -8,7 +8,7 @@ func keyForOriginDestination(origin, destination string) string {
 
 // Cache simple map cache
 type Cache struct {
-	hits, misses  int
+	Hits, Misses  int
 	cheapestRoute map[string][]*Flight
 }
 
@@ -28,10 +28,10 @@ func (c *Cache) GetCheapestRoute(origin, destination string) []*Flight {
 		c.resetCache()
 	}
 	if v, ok := c.cheapestRoute[key]; ok {
-		c.hits++
+		c.Hits++
 		return v
 	}
-	c.misses++
+	c.Misses++
 	return nil
 }
 
