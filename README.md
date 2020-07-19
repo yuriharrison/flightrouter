@@ -1,5 +1,7 @@
 # Flight Router
 
+![Build](https://github.com/yuriharrison/flightrouter/workflows/CI/badge.svg?style=flat-square)
+
 **Example data:** ./fixtures/flights.csv
 
 ### Makefile

@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+
+      - name: Checkout code into workspace directory
+        uses: actions/checkout@v2
+
+      - name: Install dep
+        run: curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+
+      - name: Install all Go dependencies
+        run: dep ensure && dep status
+
+      - name: Code quality
+        run: make lint
+
+      - name: Tests
+          run: make test
