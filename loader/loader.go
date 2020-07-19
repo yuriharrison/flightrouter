@@ -11,11 +11,10 @@ import (
 	db "github.com/yuriharrison/flightrouter/flightsdb"
 )
 
-const bufferSize = 4096
-
 // ImportFlightsFromFile import flights into FlightsDB
 func ImportFlightsFromFile(fileName string, db *db.FlightsDB) error {
-	f, err := os.OpenFile(fileName, os.O_RDWR, 0644)
+	f, err := os.OpenFile(fileName, os.O_CREATE|os.O_RDWR, 0644)
+	defer f.Close()
 	if err != nil {
 		return err
 	}

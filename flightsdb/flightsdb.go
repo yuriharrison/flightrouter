@@ -2,6 +2,7 @@ package flightsdb
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -40,8 +41,9 @@ func (ap *Airport) NewFlight(dest *Airport, price float64) bool {
 // FlightsDB database for query flights
 type FlightsDB struct {
 	airports   map[string]*Airport
-	NumFlights int
+	numFlights int
 	Cache      Cache
+	file       *os.File
 }
 
 // New create a new *FlightsDB
@@ -50,6 +52,16 @@ func New() *FlightsDB {
 		airports: make(map[string]*Airport),
 		Cache:    Cache{},
 	}
+}
+
+// SetFile for persistence
+func (db *FlightsDB) SetFile(fileName string) error {
+	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	db.file = file
+	return nil
 }
 
 func (db *FlightsDB) getAirports(origCode, destCode string) (*Airport, *Airport, error) {
@@ -64,6 +76,14 @@ func (db *FlightsDB) getAirports(origCode, destCode string) (*Airport, *Airport,
 	return origin, destination, nil
 }
 
+// Persist flight log if file is available
+func (db *FlightsDB) Persist(origin, destination *Airport, price float64) {
+	if db.file != nil {
+		row := origin.Code + "," + destination.Code + "," + fmt.Sprintf("%.2f", price)
+		db.file.WriteString(row + "\n")
+	}
+}
+
 // Add new flight to DB
 func (db *FlightsDB) Add(origCode, destCode string, price float64) error {
 	origin, destination, err := db.getAirports(origCode, destCode)
@@ -72,8 +92,9 @@ func (db *FlightsDB) Add(origCode, destCode string, price float64) error {
 	}
 	db.Cache.Clean()
 	if new := origin.NewFlight(destination, price); new {
-		db.NumFlights++
+		db.numFlights++
 	}
+	db.Persist(origin, destination, price)
 	return nil
 }
 
@@ -97,7 +118,7 @@ func (db *FlightsDB) GetAirport(code string) (*Airport, error) {
 
 // Size return the total number of flights on the database
 func (db *FlightsDB) Size() int {
-	return db.NumFlights
+	return db.numFlights
 }
 
 // Remove removes a flight if it exists
@@ -107,6 +128,7 @@ func (db *FlightsDB) Remove(origCode, destCode string) error {
 		return err
 	}
 	delete(origin.flights, destination)
+	db.numFlights--
 	db.Cache.Clean()
 	return nil
 }

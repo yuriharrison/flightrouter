@@ -152,11 +152,11 @@ func TestFlightsDBCache(t *testing.T) {
 	db.CheapestRoute(CNF, BSB)                  // miss
 	db.CheapestRoute(CNF, GRU)                  // miss
 	db.CheapestRoute(CNF, strings.ToLower(BSB)) // hit
-	if db.Cache.hits != 1 || db.Cache.misses != 2 {
+	if db.Cache.Hits != 1 || db.Cache.Misses != 2 {
 		t.Errorf(
 			"Cache is not working properly: Hits %v Misses %v",
-			db.Cache.hits,
-			db.Cache.misses,
+			db.Cache.Hits,
+			db.Cache.Misses,
 		)
 	}
 	db.Add(BSB, GRU, 200) // clean

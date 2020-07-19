@@ -90,7 +90,7 @@ func StatusWSView(c *websocket.Conn) {
 		<-ticker.C
 		msg, _ := json.Marshal(
 			StatusPayload{
-				db.NumFlights,
+				db.Size(),
 				StatusCache{db.Cache.Hits, db.Cache.Misses},
 				time.Now(),
 			},

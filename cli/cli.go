@@ -18,26 +18,29 @@ func cliBasic(args map[string]commando.ArgValue, flags map[string]commando.FlagV
 	db := flightsdb.New()
 	loader.ImportFlightsFromFile(file, db)
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Search for flight (e.g. GRU-APQ): ")
-	rawRoute, err := reader.ReadString('\n')
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+	for {
+		fmt.Print("Search for flight (e.g. GRU-APQ): ")
+		rawRoute, err := reader.ReadString('\n')
+		if err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+		origCode, destCode := util.FormatInputRoute(rawRoute)
+		cheapestRoute, err := db.CheapestRoute(origCode, destCode)
+		if err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+		fmt.Println("Cheapest route available:", util.FormatRouteToString(cheapestRoute))
 	}
-	origCode, destCode := util.FormatInputRoute(rawRoute)
-	cheapestRoute, err := db.CheapestRoute(origCode, destCode)
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
-	}
-	fmt.Println("Cheapest route available:", util.FormatRouteToString(cheapestRoute))
 }
 
 func startAPI(args map[string]commando.ArgValue, flags map[string]commando.FlagValue) {
 	fmt.Println("Starting server ...")
 	db := flightsdb.New()
-	if csvFile, ok := flags["data"].Value.(string); ok && csvFile != "NULL" {
+	if csvFile, ok := flags["data"].Value.(string); ok {
 		loader.ImportFlightsFromFile(csvFile, db)
+		db.SetFile(csvFile)
 	}
 	api.StartServer(db)
 }
@@ -57,7 +60,7 @@ func Run() {
 	commando.
 		Register("api").
 		SetDescription("Starts the Web API on port 8080").
-		AddFlag("data,d", "csv file to pre fetch data", commando.String, "NULL").
+		AddFlag("data,d", "csv file", commando.String, "./data.csv").
 		SetAction(startAPI)
 
 	commando.Parse(nil)
