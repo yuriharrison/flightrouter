@@ -4,7 +4,7 @@ help:  ## This help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
 
 install-dev-dependencies: ## Install development dependencies
-	go get golint
+	go get golang.org/x/lint/golint
 
 format: ## Run GOFMT to format code
 	echo "Running GOFMT"
