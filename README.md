@@ -49,4 +49,4 @@ Flags:
 - DELETE `/flight/:route`
   - `curl -X DELETE -w "%{http_code}" localhost:8080/flight/GRU-APQ`
 - PUT `/flights/import/csv`
-  - `curl -X PUT -F "document=@./loader/fixtures/flights.csv;type=text/csv" -w "%{http_code}" localhost:8080/flights/import/csv`
+  - `curl -X PUT -F "document=@./fixtures/flights.csv;type=text/csv" -w "%{http_code}" localhost:8080/flights/import/csv`
