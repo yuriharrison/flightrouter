@@ -6,8 +6,8 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 COPY . .
-RUN go build -o main .
+RUN go build -o bin/app .
 
 FROM scratch
-COPY --from=build-env /go/bin/app /go/bin/app
+COPY --from=build-env /app/bin/app /go/bin/app
 ENTRYPOINT ["/go/bin/app api"]
