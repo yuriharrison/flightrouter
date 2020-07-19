@@ -7,10 +7,11 @@
 ### Makefile
 
 ```
-$make
+$ make
 build                Build application
 format               Run GOFMT to format code
 help                 This help
+install-dev-dependencies Install development dependencies
 lint                 Run GOVET and GOLINT to check code quality
 test                 Run tests
 ```
