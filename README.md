@@ -6,8 +6,9 @@
 
 ### Modules
 
-- `./flightsdb` - core of the system, manage the flights in the system
-  and implements the Dijkstra algorithm ([here](./flightsdb/query.go)) to find the cheapest route
+- `./flightsdb` - core of the system, manage the flights in the system,
+  implements the Dijkstra algorithm ([here](./flightsdb/query.go)) to find the cheapest route
+  and cache all searches until the graph changes.
 - `./loader` - responsible for importing data to flightsdb instance
 - `./cli` - manages the cli program and starts the api
 - `./api` - all related to the API, views, payload structs, monitoring, etc
