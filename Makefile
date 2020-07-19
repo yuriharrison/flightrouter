@@ -14,8 +14,8 @@ lint: ## Run GOVET and GOLINT to check code quality
 
 test: ## Run tests
 	echo "Running application test"
-	go test ./...
-	
+	go test -timeout 5s ./...
+
 build: lint test ## Build application
 	echo "Running build"
 	go build -o bin/flightrouter
