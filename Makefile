@@ -19,3 +19,6 @@ test: ## Run tests
 build: lint test ## Build application
 	echo "Running build"
 	go build -o bin/flightrouter
+
+install-dev-dependencies:
+	go get golint
