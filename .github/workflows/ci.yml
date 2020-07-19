@@ -21,6 +21,9 @@ jobs:
       - name: Checkout code into workspace directory
         uses: actions/checkout@v2
 
+      - name: Install dev dependencies
+        run: make install-dev-dependencies
+
       - name: Install all Go dependencies
         run: go get -d ./...
 
