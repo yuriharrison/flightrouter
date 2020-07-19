@@ -25,7 +25,7 @@ jobs:
         run: mkdir -p /home/runner/go/bin && curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
       - name: Install all Go dependencies
-        run: /usr/bin/dep ensure && /usr/bin/dep status
+        run: /home/runner/go/bin/dep ensure && /home/runner/go/bin/dep status
 
       - name: Code quality
         run: make lint
