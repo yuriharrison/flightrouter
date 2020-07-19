@@ -15,3 +15,7 @@
 *.out
 
 vendor/
+
+# Build
+bin/
+build/
