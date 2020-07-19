@@ -13,7 +13,7 @@ format: ## Run GOFMT to format code
 lint: ## Run GOVET and GOLINT to check code quality
 	echo "Running GOVET and GOLINT"
 	go vet ./... && \
-	$(GOLINT) ./...
+	$(GOLINT) ./... | grep -v "^vendor/"; exit 0
 
 test: ## Run tests
 	echo "Running application test"
