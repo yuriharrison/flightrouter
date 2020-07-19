@@ -19,6 +19,9 @@ test: ## Run tests
 	echo "Running application test"
 	go test -timeout 5s ./...
 
+coverage: ## Run test coverage
+	go test -cover ./...
+
 build: lint test ## Build application
 	echo "Running build"
 	go build -o bin/flightrouter
